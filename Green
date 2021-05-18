@@ -1,0 +1,63 @@
+#!/usr/bin/env pybricks-micropython
+from pybricks.hubs import EV3Brick
+from pybricks.ev3devices import (Motor, TouchSensor, ColorSensor,
+                                 InfraredSensor, UltrasonicSensor, GyroSensor)
+from pybricks.parameters import Port, Stop, Direction, Button, Color
+from pybricks.tools import wait, StopWatch, DataLog
+from pybricks.robotics import DriveBase
+from pybricks.media.ev3dev import SoundFile, ImageFile
+
+
+# This program requires LEGO EV3 MicroPython v2.0 or higher.
+# Click "Open user guide" on the EV3 extension tab for more information.
+
+
+
+# Create your objects here.
+ev3 = EV3Brick()
+sensor = TouchSensor(Port.S1)
+motora = Motor(Port.A)
+motord = Motor(Port.D)
+
+# Write your program here.
+ev3.speaker.beep()
+def up_music():
+    motora.reset_angle(0)
+    motord.reset_angle(0)
+    motora.run(500)
+    motord.run(500)
+    #line 1
+    ev3.speaker.play_notes(['D4/8','E4/8','G4/4','B4/2','D5/8','C5/8','B4/4','A4/2','D5/8','C5/8','B4/4'])
+    motora.run(500)
+    motord.run(-500)
+    #line 2
+    ev3.speaker.play_notes(['A4/2','D4/8','E4/8','G4/4','B4/4','C5/4','B4/4','C5/4','B4/4','A4/4','G4/4','A4/4'])
+    motora.run(-500)
+    motord.run(-500)
+    #line 3
+    ev3.speaker.play_notes(['B4/4','C5/4','B4/4','C5/4','B4/4','A4/4','G4/4','A4/4','D4/4','B4/4','B4/4','B4/4'])
+    motora.stop()
+    motord.stop()
+    print(motora.angle())
+    anglea = motora.angle() // 360 * 360
+    print(motord.angle())
+    angled = motord.angle() // 360 * 360
+    motora.run_target(500, anglea, then=Stop.HOLD, wait=False)
+    motord.run_target(500, angled, then=Stop.HOLD, wait=True)
+    motora.stop()
+    motord.stop()
+
+def press_dance():
+    sensor.pressed()
+    if sensor.pressed() == True:
+       up_music()
+
+
+while True:
+    press_dance()
+
+   
+
+
+
+
